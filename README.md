@@ -58,5 +58,11 @@ Further you'll of course set an `action`, can set the `method` (will default to
 | @error | Emits when the form request returns with an error. Includes the error. |
 | @complete | Emits when the form request returns. Includes a boolean value of whether the request were succesful or not. |
 | @fetch | Emits when a new request is made. Includes the promise of the request itself. |
-<br>
-<br>
+
+### Exposed slot props
+
+| Prop | Description |
+| ---- | ----------- |
+| isFetching | Boolean value for whether its fetching or not. |
+| currentResponse | If the latest fetch gave a response, this will have its value. |
+| currentError | If the latest fetch gave an error, this will have its value. |
