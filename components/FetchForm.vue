@@ -7,7 +7,7 @@
     v-bind="attrs"
     @submit="onSubmit"
   >
-    <slot></slot>
+    <slot v-bind="{ isFetching, currentResponse, currentError }"></slot>
   </form>
 </template>
 
@@ -52,6 +52,10 @@ const options = computed(() => ({
 	...props.options,
 }));
 
+const isFetching = ref(false);
+const currentResponse = ref(null);
+const currentError = ref(null);
+
 const attrs = computed(() => {
 	const attrs = { ...originalAttrs };
 	delete attrs.onSubmit;
@@ -79,8 +83,9 @@ function onSubmit(e) {
 
 	// Run fetch
 	if (props.action) {
-		const actionURL = new URL(props.action, 'https://example.com/');
+		const actionURL = new URL(props.action, 'https://example.com');
 		let formData = e.target.formData ? e.target.formData() : new FormData(e.target);
+		let origin = actionURL.origin === 'https://example.com' ? '' : actionURL.origin;
 
 		// Transform the data
 		let payload = formData;
@@ -104,7 +109,8 @@ function onSubmit(e) {
 		}
 
 		let success = true;
-		const fetch = useFetch(actionURL.pathname + actionURL.search, {
+		isFetching.value = true;
+		const fetch = useFetch(origin + actionURL.pathname + actionURL.search, {
 			// Add form data to POST requests
 			body: method.value === 'POST' ? payload : undefined,
 			// Add options
@@ -116,12 +122,19 @@ function onSubmit(e) {
 
 			// @response
 			emit('response', data.value);
+
+			currentResponse.value = data.value;
+			currentError.value = null;
 		}).catch((error) => {
 			// @error
 			emit('error', error);
 			success = false;
+
+			currentResponse.value = null;
+			currentError.value = error;
 		}).finally(() => {
 			// @complete
+			isFetching.value = false;
 			emit('complete', success);
 		});
 
