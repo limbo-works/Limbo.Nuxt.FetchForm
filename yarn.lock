@@ -3025,9 +3025,9 @@ isexe@^2.0.0:
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
 jiti@^1.18.2:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.19.0.tgz#9bf45a47670f0f7d0c9c53325c8216f90353cd2f"
-  integrity sha512-93OnYCvFp88SbkJstwqwGOxU1POpIqImAlGKZLAXuZRJrvfRtKUrcAwFaGuTcrlglkQXrV7QvHkLFizFWeRU5g==
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.19.1.tgz#fa99e4b76a23053e0e7cde098efe1704a14c16f1"
+  integrity sha512-oVhqoRDaBXf7sjkll95LHVS6Myyyb1zaunVwk4Z0+WPSW4gjS0pl01zYKHScTuyEhQsFxV5L4DR5r+YqSyqyyg==
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -4794,9 +4794,9 @@ unhead@1.1.29:
     hookable "^5.5.3"
 
 unimport@^3.0.10, unimport@^3.0.11:
-  version "3.0.12"
-  resolved "https://registry.yarnpkg.com/unimport/-/unimport-3.0.12.tgz#6486eb0f457ed6d581e393a24d9435bb0e7ee2e7"
-  integrity sha512-wETYjro+wK0lGlate7JNDu4OI89m6hNt2bfqL8ysAGgStXyIplISZrktAqr2psfY9/ft/jU5HWatk7wZeUUPdQ==
+  version "3.0.14"
+  resolved "https://registry.yarnpkg.com/unimport/-/unimport-3.0.14.tgz#d60beeddc24187243cc1a9f79a75adfeea6dbc31"
+  integrity sha512-67Rh/sGpEuVqdHWkXaZ6NOq+I7sKt86o+DUtKeGB6dh4Hk1A8AQrzyVGg2+LaVEYotStH7HwvV9YSaRjyT7Uqg==
   dependencies:
     "@rollup/pluginutils" "^5.0.2"
     escape-string-regexp "^5.0.0"
@@ -4845,14 +4845,14 @@ unplugin@^1.3.1:
     webpack-virtual-modules "^0.5.0"
 
 unstorage@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/unstorage/-/unstorage-1.7.0.tgz#1b3c66aa495f52bc248d63b9b2f75446b0435544"
-  integrity sha512-f78UtR4HyUGWuET35iNPdKMvCh9YPQpC7WvkGpP6XiLlolT/9wjyAICYN9AMD/tlB8ZdOqWQHZn+j7mXcTSO4w==
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/unstorage/-/unstorage-1.8.0.tgz#fa90a5a82c35183257acc3f0461fd982f42dfc9a"
+  integrity sha512-Wl6a0fYIIPx8yWIHAVNzsNRcIpagVnBV05UXeIFCNqPZ5tu0w0MPE+eTjpRe/yxCD60K7qX55K5Px/PeKvNntw==
   dependencies:
     anymatch "^3.1.3"
     chokidar "^3.5.3"
     destr "^2.0.0"
-    h3 "^1.7.0"
+    h3 "^1.7.1"
     ioredis "^5.3.2"
     listhen "^1.0.4"
     lru-cache "^10.0.0"
