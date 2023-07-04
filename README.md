@@ -1,73 +1,62 @@
-# Nuxt Layer Starter
+# FetchForm
 
-Create Nuxt extendable layer with this GitHub template.
+Vue component for a form that uses fetch under the hood, but otherwise looks like a standard form element.
 
-## Setup
+## Installation
 
-Make sure to install the dependencies:
-
-```bash
-pnpm install
+``` bash
+yarn add @limbo-works/fetch-form
 ```
 
-## Working on your theme
+## Using the component
 
-Your theme is at the root of this repository, it is exactly like a regular Nuxt project, except you can publish it on NPM.
+Make the component globally usable by extending the layer in `nuxt.config.js`.
 
-The `.playground` directory should help you on trying your theme during development.
-
-Running `pnpm dev` will prepare and boot `.playground` directory, which imports your theme itself.
-
-## Distributing your theme
-
-Your Nuxt layer is shaped exactly the same as any other Nuxt project, except you can publish it on NPM.
-
-To do so, you only have to check if `files` in `package.json` are valid, then run:
-
-```bash
-npm publish --access public
-```
-
-Once done, your users will only have to run:
-
-```bash
-npm install --save your-theme
-```
-
-Then add the dependency to their `extends` in `nuxt.config`:
-
-```ts
-defineNuxtConfig({
-	extends: 'your-theme',
+``` js
+export default defineNuxtConfig({
+    extends: [
+        '@limbo-works/fetch-form',
+        ...
+    ],
+    ...
 });
 ```
 
-## Development Server
+Then you can use the `FetchForm` component anywhere within that solution:
 
-Start the development server on http://localhost:3000
+``` html
+<!-- As written in Vue -->
+<FetchForm
+    action="/some/endpoint"
 
-```bash
-pnpm dev
+>
+...
+</FetchForm>
+
+<!-- As it may appear in the dom -->
+<form action="/some/endpoint" method="GET">
+...
+</form>
 ```
 
-## Production
+### Props overview
 
-Build the application for production:
+| Prop | Description | Default value | Data type |
+| ---- | ----------- | ------------- | --------- |
+| options | Options to pass the fetch request. | {} | Object |
+| dataAppendage | An object with extra key-value pairs for the request, on top of whatever named form fields inside the form. | {} | Object |
+| <span class="colour" style="color:rgb(225, 228, 232)"></span>dataTransformation | A transformer-function to change the data before performing the request. | (data) => data | Function |
+| useNativeFormDataOnPost | If false the form (on POST) will send the data as form data. If true a JSON object will be send instead. | false | Boolean |
 
-```bash
-pnpm build
-```
+Further you'll of course set an `action`, can set the `method` (will default to "GET" if not set) and can `disable` using the standard form attributes.
 
-Or statically generate it with:
+### Events overview
 
-```bash
-pnpm generate
-```
-
-Locally preview production build:
-
-```bash
-pnpm preview
-```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/docs/deployment) for more information.
+| Event | Description |
+| ----- | ----------- |
+| @response | Emits when the form request returns with a non-error response. Includes the response data. |
+| @error | Emits when the form request returns with an error. Includes the error. |
+| @complete | Emits when the form request returns. Includes a boolean value of whether the request were succesful or not. |
+| @fetch | Emits when a new request is made. Includes the promise of the request itself. |
+<br>
+<br>
