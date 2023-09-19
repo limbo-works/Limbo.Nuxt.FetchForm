@@ -1,14 +1,14 @@
 <template>
-  <form
-    :action="action"
-    :enctype="enctype"
-    :method="method"
-    class="c-fetch-form"
-    v-bind="attrs"
-    @submit="onSubmit"
-  >
-    <slot v-bind="{ isFetching, currentResponse, currentError }"></slot>
-  </form>
+	<form
+		:action="action"
+		:enctype="enctype"
+		:method="method"
+		class="c-fetch-form"
+		v-bind="attrs"
+		@submit="onSubmit"
+	>
+		<slot v-bind="{ isFetching, currentResponse, currentError }"></slot>
+	</form>
 </template>
 
 <script setup>
@@ -76,7 +76,7 @@ function onSubmit(e) {
 	originalAttrs.onSubmit?.(e);
 	if (
 		e.defaultPrevented ||
-    props.method?.toUpperCase?.() === 'DIALOG'
+      props.method?.toUpperCase?.() === 'DIALOG'
 	) {
 		return;
 	}
@@ -91,7 +91,7 @@ function onSubmit(e) {
 		let payload = formData;
 		if (props.dataAppendage) {
 			for (const [key, value] of Object.entries(props.dataAppendage)) {
-				payload.append(key, value);
+				payload.set(key, value);
 			}
 		}
 
