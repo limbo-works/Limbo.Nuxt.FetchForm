@@ -1,6 +1,6 @@
 <template>
 	<form
-		onsubmit="return false;"
+		:onsubmit="isMounted ? null : 'return false;'"
 		:action="action"
 		:enctype="enctype"
 		:method="method"
@@ -46,7 +46,6 @@ const props = defineProps({
 const emit = defineEmits(['fetch', 'response', 'error', 'complete']);
 
 const isMounted = ref(false);
-const action = computed(() => isMounted.value ? props.action : null);
 const method = computed(() => (props.method || 'GET').toUpperCase());
 const options = computed(() => ({
 	method: method.value,
@@ -81,6 +80,9 @@ function onSubmit(e) {
 	) {
 		return;
 	}
+
+	// Prevent ordinary form handling
+	e.preventDefault();
 
 	// Run fetch
 	if (props.action) {
@@ -142,9 +144,6 @@ function onSubmit(e) {
 		// @fetch
 		emit('fetch', fetch);
 	}
-
-	// Prevent ordinary form handling
-	e.preventDefault();
 }
 </script>
 
