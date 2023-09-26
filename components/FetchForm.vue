@@ -1,5 +1,6 @@
 <template>
 	<form
+		onsubmit="return false;"
 		:action="action"
 		:enctype="enctype"
 		:method="method"
