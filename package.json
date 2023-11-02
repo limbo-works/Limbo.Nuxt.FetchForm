@@ -1,7 +1,7 @@
 {
 	"name": "@limbo-works/fetch-form",
 	"type": "module",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"main": "./nuxt.config.js",
 	"scripts": {
 		"dev": "nuxi dev .playground",

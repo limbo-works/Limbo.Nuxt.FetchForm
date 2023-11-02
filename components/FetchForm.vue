@@ -43,14 +43,20 @@ const props = defineProps({
 	disabled: Boolean,
 });
 
-const emit = defineEmits(['fetch', 'response', 'error', 'complete']);
+const emit = defineEmits(['fetch', 'request', 'response', 'response:full', 'error', 'complete']);
 
 const isMounted = ref(false);
 const method = computed(() => (props.method || 'GET').toUpperCase());
-const options = computed(() => ({
-	method: method.value,
-	...props.options,
-}));
+const options = computed(() => {
+	return {
+		method: method.value,
+		...props.options,
+		onRequest: (...args) => {
+			props.options?.onRequest?.(...args);
+			emit('request', ...args);
+		},
+	};
+});
 
 const isFetching = ref(false);
 const currentResponse = ref(null);
@@ -118,13 +124,15 @@ function onSubmit(e) {
 			body: method.value === 'POST' ? payload : undefined,
 			// Add options
 			...options.value,
-		}).then(({ error, data }) => {
+		}).then((response) => {
+			const { error, data } = response;
 			if (error?.value) {
 				throw error.value;
 			}
 
 			// @response
 			emit('response', data.value);
+			emit('response:full', response);
 
 			currentResponse.value = data.value;
 			currentError.value = null;
