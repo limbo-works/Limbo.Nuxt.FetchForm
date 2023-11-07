@@ -125,14 +125,17 @@ function onSubmit(e) {
         // Get mockup response
         if (props.mockupResponse) {
 			const data = typeof props.mockupResponse === 'function' ? props.mockupResponse?.(payload) : props.mockupResponse;
-            emit('fetch', null);
-			emit('response', data);
-			emit('response:full', { data });
-            emit('complete', true);
+            emit('fetch', new Promise((resolve) => {
+				emit('response', data);
+				emit('response:full', { meta: { code: 200 }, data, error: null });
+				emit('complete', true);
 
-            currentResponse.value = props.mockupResponse;
-            currentError.value = null;
-            isFetching.value = false;
+				resolve({ meta: { code: 200 }, data, error: null });
+
+				currentResponse.value = props.mockupResponse;
+				currentError.value = null;
+				isFetching.value = false;
+			}));
 
             return;
         }
