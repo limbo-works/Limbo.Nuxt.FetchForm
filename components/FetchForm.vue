@@ -39,6 +39,8 @@ const props = defineProps({
 
 	useNativeFormDataOnPost: Boolean,
 
+    mockupResponse: null,
+
 	// Disable submitting the form
 	disabled: Boolean,
 });
@@ -119,6 +121,22 @@ function onSubmit(e) {
 
 		let success = true;
 		isFetching.value = true;
+
+        // Get mockup response
+        if (props.mockupResponse) {
+			const data = typeof props.mockupResponse === 'function' ? props.mockupResponse?.(payload) : props.mockupResponse;
+            emit('fetch', null);
+			emit('response', data);
+			emit('response:full', { data });
+            emit('complete', true);
+
+            currentResponse.value = props.mockupResponse;
+            currentError.value = null;
+            isFetching.value = false;
+
+            return;
+        }
+
 		const fetch = useFetch(origin + actionURL.pathname + actionURL.search, {
 			// Add form data to POST requests
 			body: method.value === 'POST' ? payload : undefined,

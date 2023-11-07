@@ -3,6 +3,7 @@
 		<FetchForm
 			:action="`https://pokeapi.co/api/v2/pokemon/${pokemon.toLowerCase()}`"
 			#default="{ isFetching, currentResponse, currentError }"
+			:mockup-response="(data) => ({ name: 'ditto', data })"
 			@response="onResponse"
 			@error="onError"
 		>
