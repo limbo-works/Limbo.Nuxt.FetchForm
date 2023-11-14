@@ -26,7 +26,9 @@ const form = ref(null);
 onMounted(async () => {
 	console.log(form.value);
 	if (!form.value.isFetching) {
-		console.log(await form.value.fetch());
+		console.log(await form.value.submit({
+			mockupResponse: undefined,
+		}));
 	}
 });
 

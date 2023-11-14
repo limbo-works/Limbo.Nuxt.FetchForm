@@ -96,28 +96,42 @@ async function onSubmit(e) {
 	e.preventDefault();
 
     // Run fetch
-    await fetch(true);
+    await submit();
 }
 
-async function fetch() {
-	if (props.action) {
-		const actionURL = new URL(props.action, 'https://example.com');
+async function submit(localProps) {
+    localProps ??= {};
+    localProps = { ...props, ...localProps }
+
+	const localOptions = ref({
+		...options.value,
+		...localProps.options,
+		onRequest: (...args) => {
+			localProps.options?.onRequest?.(...args);
+			emit('request', ...args);
+		},
+	});
+
+	console.log(localProps);
+
+	if (localProps.action) {
+		const actionURL = new URL(localProps.action, 'https://example.com');
 		let formData = $el.value?.formData ? $el.value.formData() : new FormData($el.value);
 		let origin = actionURL.origin === 'https://example.com' ? '' : actionURL.origin;
 
 		// Transform the data
 		let payload = formData;
-		if (props.dataAppendage) {
-			for (const [key, value] of Object.entries(props.dataAppendage)) {
+		if (localProps.dataAppendage) {
+			for (const [key, value] of Object.entries(localProps.dataAppendage)) {
 				payload.set(key, value);
 			}
 		}
 
-		if (props.dataTransformation) {
-			payload = props.dataTransformation(payload);
+		if (localProps.dataTransformation) {
+			payload = localProps.dataTransformation(payload);
 		}
 
-		if (!props.useNativeFormDataOnPost) {
+		if (!localProps.useNativeFormDataOnPost) {
 			payload = Object.fromEntries(payload);
 		}
 
@@ -130,8 +144,8 @@ async function fetch() {
 		isFetchingCount.value++;
 
         // Get mockup response
-        if (props.mockupResponse) {
-			const data = typeof props.mockupResponse === 'function' ? props.mockupResponse?.(payload) : props.mockupResponse;
+        if (localProps.mockupResponse) {
+			const data = typeof localProps.mockupResponse === 'function' ? localProps.mockupResponse?.(payload) : localProps.mockupResponse;
             emit('fetch', new Promise((resolve) => {
 				emit('response', data);
 				emit('response:full', { meta: { code: 200 }, data, error: null });
@@ -139,7 +153,7 @@ async function fetch() {
 
 				resolve({ meta: { code: 200 }, data, error: null });
 
-				currentResponse.value = props.mockupResponse;
+				currentResponse.value = localProps.mockupResponse;
 				currentError.value = null;
 				isFetchingCount.value--;
 			}));
@@ -151,7 +165,7 @@ async function fetch() {
 			// Add form data to POST requests
 			body: method.value === 'POST' ? payload : undefined,
 			// Add options
-			...options.value,
+			...localOptions.value,
 		}).then((response) => {
 			const { error, data } = response;
 			if (error?.value) {
@@ -187,7 +201,7 @@ async function fetch() {
 }
 
 // Expose fetch function
-defineExpose({ isFetching: isFetching.value, fetch });
+defineExpose({ isFetching: isFetching.value, submit });
 </script>
 
 <script>
