@@ -1,5 +1,6 @@
 <template>
 	<form
+		ref="$el"
 		:onsubmit="isMounted ? null : 'return false;'"
 		:action="action"
 		:enctype="enctype"
@@ -47,6 +48,7 @@ const props = defineProps({
 
 const emit = defineEmits(['fetch', 'request', 'response', 'response:full', 'error', 'complete']);
 
+const $el = ref(null);
 const isMounted = ref(false);
 const method = computed(() => (props.method || 'GET').toUpperCase());
 const options = computed(() => {
@@ -60,7 +62,8 @@ const options = computed(() => {
 	};
 });
 
-const isFetching = ref(false);
+const isFetchingCount = ref(0);
+const isFetching = computed(() => isFetchingCount.value > 0);
 const currentResponse = ref(null);
 const currentError = ref(null);
 
@@ -74,7 +77,7 @@ onMounted(() => {
 	isMounted.value = true;
 });
 
-function onSubmit(e) {
+async function onSubmit(e) {
 	if (props.disabled) {
 		e.preventDefault();
 		return;
@@ -92,10 +95,14 @@ function onSubmit(e) {
 	// Prevent ordinary form handling
 	e.preventDefault();
 
-	// Run fetch
+    // Run fetch
+    await fetch(true);
+}
+
+async function fetch() {
 	if (props.action) {
 		const actionURL = new URL(props.action, 'https://example.com');
-		let formData = e.target.formData ? e.target.formData() : new FormData(e.target);
+		let formData = $el.value?.formData ? $el.value.formData() : new FormData($el.value);
 		let origin = actionURL.origin === 'https://example.com' ? '' : actionURL.origin;
 
 		// Transform the data
@@ -120,7 +127,7 @@ function onSubmit(e) {
 		}
 
 		let success = true;
-		isFetching.value = true;
+		isFetchingCount.value++;
 
         // Get mockup response
         if (props.mockupResponse) {
@@ -134,10 +141,10 @@ function onSubmit(e) {
 
 				currentResponse.value = props.mockupResponse;
 				currentError.value = null;
-				isFetching.value = false;
+				isFetchingCount.value--;
 			}));
 
-            return;
+            return data;
         }
 
 		const fetch = useFetch(origin + actionURL.pathname + actionURL.search, {
@@ -166,14 +173,21 @@ function onSubmit(e) {
 			currentError.value = error;
 		}).finally(() => {
 			// @complete
-			isFetching.value = false;
+			isFetchingCount.value--;
 			emit('complete', success);
 		});
 
 		// @fetch
 		emit('fetch', fetch);
+
+        // Await for returning data
+        await fetch;
+		return currentResponse.value;
 	}
 }
+
+// Expose fetch function
+defineExpose({ isFetching: isFetching.value, fetch });
 </script>
 
 <script>

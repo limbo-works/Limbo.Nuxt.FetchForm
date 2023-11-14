@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<FetchForm
+			ref="form"
 			:action="`https://pokeapi.co/api/v2/pokemon/${pokemon.toLowerCase()}`"
 			#default="{ isFetching, currentResponse, currentError }"
 			:mockup-response="(payload) => ({ name: 'ditto', payload })"
@@ -20,6 +21,14 @@
 <script setup>
 const pokemon = ref('ditto');
 const data = ref(null);
+
+const form = ref(null);
+onMounted(async () => {
+	console.log(form.value);
+	if (!form.value.isFetching) {
+		console.log(await form.value.fetch());
+	}
+});
 
 const onResponse = (response) => {
 	data.value = response;
