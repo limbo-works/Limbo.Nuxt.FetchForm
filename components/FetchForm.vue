@@ -112,8 +112,6 @@ async function submit(localProps) {
 		},
 	});
 
-	console.log(localProps);
-
 	if (localProps.action) {
 		const actionURL = new URL(localProps.action, 'https://example.com');
 		let formData = $el.value?.formData ? $el.value.formData() : new FormData($el.value);
