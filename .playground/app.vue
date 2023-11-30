@@ -8,7 +8,12 @@
 			@response="onResponse"
 			@error="onError"
 		>
-			<input v-model="pokemon" type="text" name="pokemon" placeholder="Enter a pokemon name" />
+			<input
+				v-model="pokemon"
+				type="text"
+				name="pokemon"
+				placeholder="Enter a pokemon name"
+			/>
 			<button type="submit">Fetch</button>
 			<div v-if="isFetching">Fetching...</div>
 			<div v-if="currentError">Error!</div>
@@ -26,9 +31,11 @@ const form = ref(null);
 onMounted(async () => {
 	console.log(form.value);
 	if (!form.value.isFetching) {
-		console.log(await form.value.submit({
-			mockupResponse: undefined,
-		}));
+		console.log(
+			await form.value.submit({
+				mockupResponse: undefined,
+			})
+		);
 	}
 });
 

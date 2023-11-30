@@ -40,13 +40,20 @@ const props = defineProps({
 
 	useNativeFormDataOnPost: Boolean,
 
-    mockupResponse: null,
+	mockupResponse: null,
 
 	// Disable submitting the form
 	disabled: Boolean,
 });
 
-const emit = defineEmits(['fetch', 'request', 'response', 'response:full', 'error', 'complete']);
+const emit = defineEmits([
+	'fetch',
+	'request',
+	'response',
+	'response:full',
+	'error',
+	'complete',
+]);
 
 const $el = ref(null);
 const isMounted = ref(false);
@@ -85,25 +92,23 @@ async function onSubmit(e) {
 
 	// Run submit
 	originalAttrs.onSubmit?.(e);
-	if (
-		e.defaultPrevented ||
-      props.method?.toUpperCase?.() === 'DIALOG'
-	) {
+	if (e.defaultPrevented || props.method?.toUpperCase?.() === 'DIALOG') {
 		return;
 	}
 
 	// Prevent ordinary form handling
 	e.preventDefault();
 
-    // Run fetch
-    await submit();
+	// Run fetch
+	await submit();
 }
 
 async function submit(localProps) {
-    localProps ??= {};
-    localProps = { ...props, ...localProps }
+	localProps ??= {};
+	localProps = { ...props, ...localProps };
 
 	const localOptions = ref({
+		key: String(Math.random()),
 		...options.value,
 		...localProps.options,
 		onRequest: (...args) => {
@@ -114,13 +119,18 @@ async function submit(localProps) {
 
 	if (localProps.action) {
 		const actionURL = new URL(localProps.action, 'https://example.com');
-		let formData = $el.value?.formData ? $el.value.formData() : new FormData($el.value);
-		let origin = actionURL.origin === 'https://example.com' ? '' : actionURL.origin;
+		let formData = $el.value?.formData
+			? $el.value.formData()
+			: new FormData($el.value);
+		let origin =
+			actionURL.origin === 'https://example.com' ? '' : actionURL.origin;
 
 		// Transform the data
 		let payload = formData;
 		if (localProps.dataAppendage) {
-			for (const [key, value] of Object.entries(localProps.dataAppendage)) {
+			for (const [key, value] of Object.entries(
+				localProps.dataAppendage
+			)) {
 				payload.set(key, value);
 			}
 		}
@@ -141,59 +151,72 @@ async function submit(localProps) {
 		let success = true;
 		isFetchingCount.value++;
 
-        // Get mockup response
-        if (localProps.mockupResponse) {
-			const data = typeof localProps.mockupResponse === 'function' ? localProps.mockupResponse?.(payload) : localProps.mockupResponse;
-            emit('fetch', new Promise((resolve) => {
-				emit('response', data);
-				emit('response:full', { meta: { code: 200 }, data, error: null });
-				emit('complete', true);
+		// Get mockup response
+		if (localProps.mockupResponse) {
+			const data =
+				typeof localProps.mockupResponse === 'function'
+					? localProps.mockupResponse?.(payload)
+					: localProps.mockupResponse;
+			emit(
+				'fetch',
+				new Promise((resolve) => {
+					emit('response', data);
+					emit('response:full', {
+						meta: { code: 200 },
+						data,
+						error: null,
+					});
+					emit('complete', true);
 
-				resolve({ meta: { code: 200 }, data, error: null });
+					resolve({ meta: { code: 200 }, data, error: null });
 
-				currentResponse.value = localProps.mockupResponse;
-				currentError.value = null;
-				isFetchingCount.value--;
-			}));
+					currentResponse.value = localProps.mockupResponse;
+					currentError.value = null;
+					isFetchingCount.value--;
+				})
+			);
 
-            return data;
-        }
+			return data;
+		}
 
 		const fetch = useFetch(origin + actionURL.pathname + actionURL.search, {
 			// Add form data to POST requests
 			body: method.value === 'POST' ? payload : undefined,
 			// Add options
 			...localOptions.value,
-		}).then((response) => {
-			const { error, data } = response;
-			if (error?.value) {
-				throw error.value;
-			}
+		})
+			.then((response) => {
+				const { error, data } = response;
+				if (error?.value) {
+					throw error.value;
+				}
 
-			// @response
-			emit('response', data.value);
-			emit('response:full', response);
+				// @response
+				emit('response', data.value);
+				emit('response:full', response);
 
-			currentResponse.value = data.value;
-			currentError.value = null;
-		}).catch((error) => {
-			// @error
-			emit('error', error);
-			success = false;
+				currentResponse.value = data.value;
+				currentError.value = null;
+			})
+			.catch((error) => {
+				// @error
+				emit('error', error);
+				success = false;
 
-			currentResponse.value = null;
-			currentError.value = error;
-		}).finally(() => {
-			// @complete
-			isFetchingCount.value--;
-			emit('complete', success);
-		});
+				currentResponse.value = null;
+				currentError.value = error;
+			})
+			.finally(() => {
+				// @complete
+				isFetchingCount.value--;
+				emit('complete', success);
+			});
 
 		// @fetch
 		emit('fetch', fetch);
 
-        // Await for returning data
-        await fetch;
+		// Await for returning data
+		await fetch;
 		return currentResponse.value;
 	}
 }
