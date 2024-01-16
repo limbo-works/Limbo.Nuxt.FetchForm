@@ -17,7 +17,10 @@
 const originalAttrs = useAttrs();
 const props = defineProps({
 	action: String,
-	enctype: String,
+	enctype: {
+		type: String,
+		default: 'application/x-www-form-urlencoded',
+	},
 	method: String,
 
 	// The options to pass to the fetch call
