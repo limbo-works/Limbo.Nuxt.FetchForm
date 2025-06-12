@@ -49,14 +49,7 @@ const props = defineProps({
 	disabled: Boolean,
 });
 
-const emit = defineEmits([
-	'fetch',
-	'request',
-	'response',
-	'response:full',
-	'error',
-	'complete',
-]);
+const emit = defineEmits(['fetch', 'request', 'response', 'error', 'complete']);
 
 const $el = ref(null);
 const isMounted = ref(false);
@@ -164,11 +157,6 @@ async function submit(localProps) {
 				'fetch',
 				new Promise((resolve) => {
 					emit('response', data);
-					emit('response:full', {
-						meta: { code: 200 },
-						data,
-						error: null,
-					});
 					emit('complete', true);
 
 					resolve({ meta: { code: 200 }, data, error: null });
@@ -191,14 +179,13 @@ async function submit(localProps) {
 			...localOptions.value,
 		})
 			.then((response) => {
-				const { error, data } = response;
+				const { error, data = ref(response) } = response;
 				if (error?.value) {
 					throw error.value;
 				}
 
 				// @response
 				emit('response', data.value);
-				emit('response:full', response);
 
 				currentResponse.value = data.value;
 				currentError.value = null;
