@@ -147,7 +147,7 @@ async function submit(localProps) {
 		}
 
 		// Add query params to GET requests
-		if (method.value === 'GET') {
+		if (['GET', 'DELETE'].includes(method.value)) {
 			actionURL.search = new URLSearchParams(payload);
 		}
 
@@ -182,9 +182,11 @@ async function submit(localProps) {
 			return data;
 		}
 
-		const fetch = useFetch(origin + actionURL.pathname + actionURL.search, {
+		const fetch = $fetch(origin + actionURL.pathname + actionURL.search, {
 			// Add form data to POST requests
-			body: method.value === 'POST' ? payload : undefined,
+			body: ['POST', 'PUT', 'PATCH'].includes(method.value)
+				? payload
+				: undefined,
 			// Add options
 			...localOptions.value,
 		})
