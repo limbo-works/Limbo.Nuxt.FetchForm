@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/limbo-works/Limbo.Nuxt.FetchForm/compare/v2.2.0...v2.2.1) (2025-06-12)
+
+
+### Bug Fixes
+
+* clearing up response formatting ([929d307](https://github.com/limbo-works/Limbo.Nuxt.FetchForm/commit/929d3071e6db81633b9dc8dc8e32b2dd254beb9c))
+
 ## [2.2.0](https://github.com/limbo-works/Limbo.Nuxt.FetchForm/compare/v2.1.0...v2.2.0) (2025-06-12)
 
 
