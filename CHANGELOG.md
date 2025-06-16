@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/limbo-works/Limbo.Nuxt.FetchForm/compare/v2.2.1...v2.2.2) (2025-06-16)
+
+
+### Bug Fixes
+
+* made fetch handling work right ([c822200](https://github.com/limbo-works/Limbo.Nuxt.FetchForm/commit/c822200c56a341276545322ac7b169bb36fb8bf8))
+
 ## [2.2.1](https://github.com/limbo-works/Limbo.Nuxt.FetchForm/compare/v2.2.0...v2.2.1) (2025-06-12)
 
 
