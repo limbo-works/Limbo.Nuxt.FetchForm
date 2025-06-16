@@ -179,15 +179,9 @@ async function submit(localProps) {
 			...localOptions.value,
 		})
 			.then((response) => {
-				const { error, data = ref(response) } = response;
-				if (error?.value) {
-					throw error.value;
-				}
+				emit('response', response);
 
-				// @response
-				emit('response', data.value);
-
-				currentResponse.value = data.value;
+				currentResponse.value = response;
 				currentError.value = null;
 			})
 			.catch((error) => {
