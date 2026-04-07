@@ -15,6 +15,7 @@
 
 <script setup>
 const originalAttrs = useAttrs();
+
 const props = defineProps({
 	action: String,
 	enctype: {
