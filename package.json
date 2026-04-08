@@ -2,7 +2,7 @@
 	"name": "@limbo-works/fetch-form",
 	"type": "module",
 	"version": "3.0.0",
-	"main": "./nuxt.config.js",
+	"main": "./nuxt.config.ts",
 	"scripts": {
 		"dev": "nuxi dev .playground",
 		"build": "nuxt build .playground",
@@ -14,6 +14,6 @@
 	},
 	"devDependencies": {
 		"@limbo-works/lint-configs": "^2.1.0",
-		"nuxt": "^4.4.2"
+		"nuxt": "^4"
 	}
 }
