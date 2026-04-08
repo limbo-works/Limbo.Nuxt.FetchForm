@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/limbo-works/Limbo.Nuxt.FetchForm/compare/fetch-form-v3.0.0...fetch-form-v3.0.1) (2026-04-08)
+
+
+### Bug Fixes
+
+* migration not fully viable ([defcdb9](https://github.com/limbo-works/Limbo.Nuxt.FetchForm/commit/defcdb96ca4a17b871983148f9622e06631f12b8))
+
 ## [3.0.0](https://github.com/limbo-works/Limbo.Nuxt.FetchForm/compare/fetch-form-v2.2.2...fetch-form-v3.0.0) (2026-04-07)
 
 ### ⚠ BREAKING CHANGES
